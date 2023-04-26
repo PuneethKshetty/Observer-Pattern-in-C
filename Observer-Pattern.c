@@ -34,12 +34,31 @@
 // }
 // }
 
+// int getState(){
+// return this.state;
+// }
+// }
+
+// class PhoneDisplay:Iobserver{
+// 	weatherStation station //instances
+// 	phonedisplay(WeatherStation station) //constructor
+// 	{
+// 		this.station = station;
+// 	}
+
+// 	void update()
+// 	{
+// 	   this.station.getState(); (above instANCE)
+// 	}
+
+// }
+
 
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 
-#define MAX_SUBSCRIBERS 10000
+#define MAX_SUBSCRIBERS 10
 
 typedef struct Subs{
     char name[20]; // has a name
@@ -48,9 +67,10 @@ typedef struct Subs{
 
 typedef struct Channel{
     Subs Subscriber;
+    int num_subscribers;
     void (*subscribe)(); //subscribe
     void (*unsubscribe)(); //unsub
-    void (*upload)(); //upload a vid
+    void (*upload)(); //upload a vid more like notify
 } Channel; // This is the subject
 
 typedef struct concreteSubs{ // concrete observer with base
@@ -74,13 +94,15 @@ void concretechannel_subscribe()
 void concretechannel_unsubscribe()
 {
     printf("UnSubscribed from the channel, Please subscribe!\n");  //check if unsub
-    exit(1);
 }
 
-void concretechannel_upload()
+void concretechannel_upload(Channel* c)
 {
-
-    printf("New video is been uploaded!\n"); //check for any new upload means like update changes within Subject
+    if(concretechannel_subscribe)
+    {
+       concretesub_update();
+       printf("New video is uploading soon!!");
+    }
 }
 
 int main()
@@ -96,21 +118,17 @@ int main()
     scanf("%d",&t);
     switch(t % 2)
     {
-        case 0 : concretechannel_subscribe();
+        // case 0 : concretechannel_subscribe();
+        //          concretesub_update();
+        //          concretechannel_upload();
+        case 0:  printf("%c",sub1);
+                 channel.b.subscribe();
+                 channel.b.upload();
                  break;
-        case 1 : concretechannel_unsubscribe();
+        case 1 : channel.b.unsubscribe();
                  break;
         default: exit(1);
-    }
-
-    if(concretechannel_subscribe)
-    {
-        concretesub_update();
-        concretechannel_upload();
-    }
-    else{
-        concretechannel_unsubscribe();
-    }
+    }    
     return 0;
 }
 
@@ -122,21 +140,3 @@ int main()
 
 
 
-// int getState(){
-// return this.state;
-// }
-// }
-
-// class PhoneDisplay:Iobserver{
-// 	weatherStation station //instances
-// 	phonedisplay(WeatherStation station) //constructor
-// 	{
-// 		this.station = station;
-// 	}
-
-// 	void update()
-// 	{
-// 	   this.station.getState(); (above instANCE)
-// 	}
-
-// }
