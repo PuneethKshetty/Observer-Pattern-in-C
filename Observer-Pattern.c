@@ -34,6 +34,94 @@
 // }
 // }
 
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+#define MAX_SUBSCRIBERS 10000
+
+typedef struct Subs{
+    char name[20]; // has a name
+    void (*update)(); // update
+} Subs;   // This is the observer
+
+typedef struct Channel{
+    Subs Subscriber;
+    void (*subscribe)(); //subscribe
+    void (*unsubscribe)(); //unsub
+    void (*upload)(); //upload a vid
+} Channel; // This is the subject
+
+typedef struct concreteSubs{ // concrete observer with base
+    Subs b;
+}concreteSubs;
+
+void concretesub_update()
+{
+    printf("received a message......."); // receives text if subject has uploaded something works like an update to subscriber
+}
+
+typedef struct concreteChannel{  //concrete subject with base
+    Channel b;
+}concreteChannel;
+
+void concretechannel_subscribe()
+{
+    printf("Subscribed to the channel\n"); //check if subscribed to channel
+}
+
+void concretechannel_unsubscribe()
+{
+    printf("UnSubscribed from the channel, Please subscribe!\n");  //check if unsub
+    exit(1);
+}
+
+void concretechannel_upload()
+{
+
+    printf("New video is been uploaded!\n"); //check for any new upload means like update changes within Subject
+}
+
+int main()
+{
+    concreteChannel channel;
+    concreteSubs sub1;
+    concreteSubs sub2;
+    channel.b.subscribe = &concretechannel_subscribe;
+    channel.b.unsubscribe = &concretechannel_unsubscribe;
+    channel.b.upload = &concretechannel_upload;
+    
+    int t;
+    scanf("%d",&t);
+    switch(t % 2)
+    {
+        case 0 : concretechannel_subscribe();
+                 break;
+        case 1 : concretechannel_unsubscribe();
+                 break;
+        default: exit(1);
+    }
+
+    if(concretechannel_subscribe)
+    {
+        concretesub_update();
+        concretechannel_upload();
+    }
+    else{
+        concretechannel_unsubscribe();
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
 // int getState(){
 // return this.state;
 // }
